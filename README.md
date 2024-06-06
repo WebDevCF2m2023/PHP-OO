@@ -755,17 +755,13 @@ interface MaInterface {
 }
 ```
 
-Une interface peut contenir des méthodes abstraites et des méthodes non abstraites. Une méthode abstraite est une méthode qui n'a pas de corps. Elle est définie avec le mot clé `abstract` et ne peut pas être définie avec les mots clés `private`, `protected` ou `final` (final sera abordé plus loin).
+Une interface peut contenir que des méthodes abstraites. Une méthode abstraite est une méthode qui n'a pas de corps. Elle est définie avec le mot clé `abstract` et ne peut pas être définie avec les mots clés `private`, `protected` ou `final` (final sera abordé plus loin).
 
 ```php  
 interface MaInterface {
     // Méthode abstraite
     abstract public function methodeAbstraite();
     
-    // Méthode non abstraite
-    public function methodeNonAbstraite() {
-        // Code de la méthode non abstraite
-    }
 }
 ```
 

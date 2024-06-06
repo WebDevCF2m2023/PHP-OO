@@ -1,6 +1,6 @@
 <?php
 
-class PersoWarrior extends PersoAbstract{
+class PersoWarrior extends PersoAbstract implements ActionsPersoInterface, PassivePersoInterface{
 
     // Propriétés d'un guerrier
     protected int $strength = 100;
