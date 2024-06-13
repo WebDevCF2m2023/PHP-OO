@@ -7,7 +7,7 @@ $perso1 = "Pas encore de personnage";
 // si on a cliqué sur envoyer
 if(isset($_POST['especePerso'],$_POST['nomPerso'])){
     try{
-        $perso1 = new PersOOOn(species2:$_POST['especePerso'],name:$_POST['nomPerso']);
+        $perso1 = new PersOOOn(species2:$_POST['especePerso'],nom:$_POST['nomPerso']);
     }catch(Exception $e){
         echo $e->getCode()." ".$e->getMessage();
     }

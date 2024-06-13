@@ -576,7 +576,7 @@ echo MaClasse::MA_CONSTANTE_PROTEGEE;
 echo MaClasse::MA_CONSTANTE_PRIVEE;
 ```
 
-A partir de **PHP 8.3**, les constantes de classes peuvent être typées:
+À partir de **PHP 8.3**, les constantes de classes peuvent être typées :
 
 
 ```php
@@ -636,7 +636,7 @@ class MaClasseEnfant extends MaClasseParent {
 
 #### 2.6. Les classes abstraites
 
-Une classe abstraite est une classe qui ne peut pas être instanciée. Elle est utilisée pour définir des méthodes et des propriétés qui seront héritées par des classes enfants.
+Une classe abstraite est une classe qui ne peut pas être instanciée. Elle est utilisée pour définir des méthodes qui seront héritées par des classes enfants.
 
 Pour définir une classe abstraite, utilisez le mot clé `abstract` :
 
@@ -648,7 +648,7 @@ abstract class MaClasseAbstraite {
 
 Une classe abstraite peut contenir des méthodes abstraites et des méthodes non abstraites.
 
-Une méthode abstraite est une méthode qui n'a pas de corps. Elle est définie avec le mot clé `abstract` et ne peut pas être définie avec les mots clés `private`, `protected` ou `final` (final sera abordé plus loin).
+Une méthode abstraite est une méthode qui n'a pas de corps. Elle est définie avec le mot clé `abstract` et ne peut pas être définie avec les mots clés `private` ou `final` (final sera abordé plus loin).
 
 ```php
 abstract class MaClasseAbstraite {
@@ -1064,7 +1064,8 @@ Exemple d'utilisation des exceptions personnalisées :
 
 class DivisionParZeroException extends Exception
 {
-    public function __construct($message = "Division par zéro impossible")
+    public function __construct($message = 
+    "Division par zéro impossible")
     {
         parent::__construct($message);
     }
@@ -1101,7 +1102,64 @@ try {
 
 Le mapping de tables SQL en classes PHP est utilisé pour mapper les tables SQL en classes PHP. Cela permet de manipuler les données de la base de données en utilisant des objets.
 
-A continuer...
+Prenons un exemple simple avec une table `users` :
+
+```sql
+CREATE TABLE users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    email VARCHAR(255) NOT NULL
+);
+```
+
+Nous allons créer une classe `User` qui va représenter la table `users` :
+
+```php
+class User {
+
+    // Propriétés
+    private int $id;
+    private string $name;
+    private string $email;
+    
+    // Constructeur
+    public function __construct(int $id, string $name, 
+    string $email) {
+        $this->setId($id);
+        $this->setName($name);
+        $this->setEmail($email);
+    }
+    // getters
+    public function getId() {
+        return $this->id;
+    }
+    
+    public function getName() {
+        return $this->name;
+    }
+    
+    public function getEmail() {
+        return $this->email;
+    }
+    
+    // setters
+    public function setId(int $id) {
+        $this->id = $id;
+    }
+    
+    public function setName(string $name) {
+        $this->name = trim(strip_tags($name));
+    }
+    
+    public function setEmail(string $email) {
+        $this->email = filter_var($email, 
+        FILTER_VALIDATE_EMAIL));
+    }
+    
+    
+}
+```
+
 
 ---
 
@@ -1113,7 +1171,56 @@ A continuer...
 
 Un manager est une classe qui permet de manipuler les données d'une table SQL. Il permet de faire le lien entre les objets et la base de données.
 
-A continuer...
+Nous allons créer une classe `UserManager` qui va permettre de manipuler les données de la table `users` :
+
+```php
+class UserManager
+{
+    private PDO $pdo;
+
+    public function __construct(PDO $pdo)
+    {
+        $this->pdo = $pdo;
+    }
+
+    public function getUser(int $id): User
+    {
+        $stmt = $this->pdo->prepare('SELECT * FROM users WHERE id = :id');
+        $stmt->execute(['id' => $id]);
+        $user = $stmt->fetch(PDO::FETCH_ASSOC);
+        return new User($user['id'], $user['name'], $user['email']);
+    }
+
+    public function getUsers(): array
+    {
+        $stmt = $this->pdo->query('SELECT * FROM users');
+        $users = [];
+        while ($user = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $users[] = new User($user['id'], $user['name'], $user['email']);
+        }
+        return $users;
+    }
+
+    public function addUser(User $user): void
+    {
+        $stmt = $this->pdo->prepare('INSERT INTO users (name, email) VALUES (:name, :email)');
+        $stmt->execute(['name' => $user->getName(), 'email' => $user->getEmail()]);
+    }
+
+    public function updateUser(User $user): void
+    {
+        $stmt = $this->pdo->prepare('UPDATE users SET name = :name, email = :email WHERE id = :id');
+        $stmt->execute(['id' => $user->getId(), 'name' => $user->getName(), 'email' => $user->getEmail()]);
+    }
+
+    public function deleteUser(int $id): void
+    {
+        $stmt = $this->pdo->prepare('DELETE FROM users WHERE id = :id');
+        $stmt->execute(['id' => $id]);
+    }
+}
+```
+
 
 
 ---

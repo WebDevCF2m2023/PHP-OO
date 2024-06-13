@@ -35,11 +35,11 @@ class PersOOOn {
          Elle permet de passer des paramètres lors de la création de l'instance
          */
 
-        public function __construct(string $species2, string $name,)
+        public function __construct(string $species2, string $nom,)
         {
             // on va utiliser les setters pour remplir les paramètres
             $this->setEspecePerso($species2);
-            $this->setNomPerso($name);
+            $this->setNomPerso($nom);
             $this->setXpPerso(0);
             $this->setHpPerso(100);
         }
@@ -68,7 +68,7 @@ class PersOOOn {
         }
 
         // setter de $nomPerso (protection + 3 à 16 caractères)
-        public function setNomPerso(string $nom) 
+        public function setNomPerso(string $nom) :void
         {
             $nom = trim(strip_tags($nom));
             if(strlen($nom) < 3 ) {
@@ -78,20 +78,19 @@ class PersOOOn {
             $this->nomPerso = $nom;
         }
         // setter de $xpPerso (int positif)
-        public function setXpPerso(int $xp)
+        public function setXpPerso(int $xp) :void
         {
-            $xp = trim(strip_tags($xp));
-            if(strlen($xp) < 0) {
-                throw new Exception("tes level 0", 555);
+           
+            if($xp < 0) {
+                throw new Exception("seul un int positif et autoriser", 555);
             }
             $this->xpPerso = $xp;
         }
         // setter de $hpPerso (bool pour false ou un int)
-        public function setHpPerso(int $hp)
+        public function setHpPerso(bool|int $hp) :void
         {
-            $hp = trim(strip_tags($hp));
-            if(strlen($hp) < 0) {
-                throw new Exception("tes mort", 666);
+            if ($hp === true ){
+                throw new Exception("le boleen ne peut etre que false", 666);
             }
             $this->hpPerso = $hp;
         }
@@ -125,4 +124,7 @@ class PersOOOn {
         {
             return $this->hpPerso;
         }
+
+
+
 }
