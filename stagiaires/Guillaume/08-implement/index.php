@@ -1,8 +1,11 @@
 <?php
+require_once "PersoTrait.php";
 require_once "ActionsPersoInterface.php";
 require_once "PassivePersoInterface.php";
 require_once "PersoAbstract.php";
 require_once "PersoWarrior.php";
+require_once "PersoWarriorEnfant.php";
+
 
 ?>
 <!DOCTYPE html>
@@ -39,6 +42,17 @@ echo $persoWarrior2->getInfoPerso();</code></pre>
     echo $persoWarrior1->getInfoPerso();
     $persoWarrior2 = new PersoWarrior("Emrah","Cyborg");
     echo $persoWarrior2->getInfoPerso();
+    $persoWarrior3 = new PersoWarriorEnfant("Rami","Elfe");
+    echo $persoWarrior3->getInfoPerso();
+    echo $persoWarrior1->isHurt();
+    echo $persoWarrior3->isHurt();
+    // proprété publique, accessible depuis une instance de la classe
+    echo $persoWarrior3->hello2;
+    // propriété statique depuis l'instance
+    echo $persoWarrior3::$hello;
+    // propriété statique : inutile d'instancier la classe
+    echo PersoAbstract::$hello;
+    var_dump(PersoWarrior::throwDice(10));
 
 
     //$persoWarrior1->setHealthPoint(1000);
@@ -52,7 +66,11 @@ echo $persoWarrior2->getInfoPerso();</code></pre>
     echo $persoWarrior1->attack($persoWarrior2)."<br>";
     echo $persoWarrior2->attack($persoWarrior1)."<br>";
 
-    var_dump($persoWarrior1,$persoWarrior2);
+    echo $persoWarrior3->metEnMajuscule("Hello les éléphants... enfants!");
+    /* impossible car le use n'est pas présent dans PersoWarrior::class
+    echo $persoWarrior2->metEnMajuscule("Hello les enfants!");
+    */
+    var_dump($persoWarrior1,$persoWarrior2,$persoWarrior3);
     ?>
 </body>
 </html>

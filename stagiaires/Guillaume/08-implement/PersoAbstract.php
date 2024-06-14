@@ -1,6 +1,10 @@
 <?php
 
 abstract class PersoAbstract{
+
+    // propriété statique
+    public static $hello = "Hello world !";
+    public  $hello2 = "Hello beautiful world !";
     // propriétés héritables
     protected ?string $name;
     protected int $healthPoint=1000;
@@ -11,7 +15,7 @@ abstract class PersoAbstract{
     public const  ESPECE_CHOICE = [
         "Humain",
         "Saiyan",
-        "Elf",
+        "Elfe",
         "Nain",
         "Cyborg",
     ];
@@ -26,8 +30,6 @@ abstract class PersoAbstract{
 
     // méthodes abstraites, elles sont déclarées dans la classe abstraite, pour obliger
     // les héritiers à redéclarer ces méthodes en public ou protected
-    abstract public function attack($enemy);
-    abstract public function defence();
     abstract protected function initPerso();
 
 
@@ -67,6 +69,16 @@ abstract class PersoAbstract{
         for($i=1; $i<=$number; $i++){
             // ternaire positif/négatif
             $dice[$i] = random_int(1,self::THROW_DICE_BIG);
+        }
+        return $dice;
+    }
+
+    public static function throwDice(int $nb): array
+    {
+        $dice = array();
+        for($i=1; $i<=$nb; $i++){
+
+            $dice[$i] = random_int(1,mt_rand(6,100));
         }
         return $dice;
     }
